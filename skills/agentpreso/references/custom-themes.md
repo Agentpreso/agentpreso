@@ -1,13 +1,19 @@
-# Custom Themes
+# How to Create a Custom Theme
 
-Create a custom theme to apply your organization's visual identity -- colors, fonts, logo, and layout styling -- to every presentation.
+Create a custom theme to apply your organization's visual identity — colors, fonts, logo, and layout styling — to every presentation.
 
-## What You'll Need
+## What you'll need
 
 - The AgentPreso CLI installed and authenticated
 - Your brand colors (hex values), fonts, and logo file (SVG or PNG)
 
-## Theme Directory Structure
+## 1. Create the theme directory
+
+```bash
+mkdir my-brand
+```
+
+A theme directory needs these files:
 
 ```
 my-brand/
@@ -16,7 +22,7 @@ my-brand/
 └── scaffold.md     # Optional: sample deck showing all layouts
 ```
 
-## theme.yaml Manifest
+## 2. Write the manifest (`theme.yaml`)
 
 The manifest declares your theme's metadata, fonts, colors, and style parameters:
 
@@ -43,7 +49,7 @@ colors:
     muted: "#666666"
     # Optional derived colors (inherit from core if omitted):
     # heading, subheading, border, codeBg, inlineCodeBg, heroBg, heroText, chapterBg
-  dark:  # Optional -- omit if no dark mode
+  dark:  # Optional — omit if no dark mode
     primary: "#66b3ff"
     secondary: "#cccccc"
     accent: "#ff9933"
@@ -56,20 +62,9 @@ style:
   density: comfortable  # compact | comfortable | spacious
   headingStyle: normal  # normal | uppercase
   accentStyle: solid    # solid | gradient
-
-# Optional: AI image generation guidance
-imagery:
-  style: "flat illustration"
-  guidance: "Use brand colors, clean lines"
-  palette: theme  # "theme" or list of hex colors
-
-# Optional: default logo placement
-logo:
-  placement: bottom-right  # top-left | top-right | bottom-left | bottom-right
-  maxHeight: "40px"
 ```
 
-### Manifest Sections
+### Manifest sections
 
 | Section | Required | Description |
 |---------|----------|-------------|
@@ -77,12 +72,10 @@ logo:
 | `fonts` | Yes | Heading, body, code font families. `metrics.bodyAvgCharWidthRatio` powers the text fitting system |
 | `colors` | Yes | Light palette required, dark palette optional. Each palette needs 6 required colors: `primary`, `secondary`, `accent`, `bg`, `text`, `muted`. Plus 8 optional derived colors |
 | `style` | Yes | Border radius (`sharp` / `rounded` / `pill`), density (`compact` / `comfortable` / `spacious`), heading style (`normal` / `uppercase`), accent style (`solid` / `gradient`) |
-| `imagery` | No | AI image generation style guidance |
-| `logo` | No | Default logo placement |
 
-## overrides.css
+## 3. Write overrides CSS (optional)
 
-Optional CSS overrides for styling beyond what `theme.yaml` variables provide:
+For styling that goes beyond what `theme.yaml` variables provide, add an `overrides.css` file:
 
 ```css
 /* Custom lead slide background gradient */
@@ -108,11 +101,11 @@ section.quote blockquote {
 }
 ```
 
-Use `!important` on `display` and `padding` properties in layout classes -- this is required to override Marpit's scaffold styles.
+Use `!important` on `display` and `padding` properties in layout classes — this is required to override Marpit's scaffold styles.
 
-## scaffold.md
+## 4. Write a scaffold deck (optional)
 
-A starter deck that demonstrates all available layouts:
+A `scaffold.md` gives users a starting point when they create a deck with your theme:
 
 ```markdown
 ---
@@ -128,7 +121,7 @@ paginate: true
 
 Subtitle or tagline
 
-**Your Name** -- Date
+**Your Name** — Date
 
 ---
 
@@ -146,11 +139,13 @@ Subtitle or tagline
 
 ## Two Columns
 
-::left::
+::: left
 Content on the left side.
+:::
 
-::right::
+::: right
 Content on the right side.
+:::
 
 ---
 
@@ -163,10 +158,16 @@ Content on the right side.
 - Third takeaway
 ```
 
-## Upload the Theme
+## 5. Upload the theme
 
 ```bash
 agentpreso themes add ./my-brand/
+```
+
+You should see:
+
+```
+Uploaded theme: my-brand
 ```
 
 To upload with a logo, add logo flags:
@@ -178,9 +179,9 @@ agentpreso themes add ./my-brand/ \
   --logo-size small
 ```
 
-See [./brand-logos.md](./brand-logos.md) for full logo configuration.
+See [Set Up Brand Logos](./brand-logos.md) for full logo configuration.
 
-## Use Your Theme
+## 6. Use your theme
 
 Create a new deck with your theme:
 
@@ -198,7 +199,7 @@ agentpreso:
 ---
 ```
 
-## Updating a Theme
+## Updating a theme
 
 After uploading, update the CSS or logo:
 
@@ -206,7 +207,7 @@ After uploading, update the CSS or logo:
 agentpreso themes update my-brand --logo ./new-logo.png
 ```
 
-## Deleting a Theme
+## Deleting a theme
 
 ```bash
 agentpreso themes delete my-brand

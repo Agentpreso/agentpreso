@@ -1,8 +1,8 @@
 # Markdown Format Reference
 
-AgentPreso presentations are single `.md` files using a superset of Marp markdown. This page documents the complete syntax.
+AgentPreso presentations are single `.md` files using a superset of [Marp](https://marp.app/) markdown. This page documents the complete syntax.
 
-## File Structure
+## File structure
 
 ```markdown
 ---
@@ -31,7 +31,7 @@ The YAML block between `---` markers at the top of the file:
 
 ```yaml
 ---
-marp: true                    # Required -- enables Marp rendering
+marp: true                    # Required — enables Marp rendering
 agentpreso:
   theme: corporate             # Theme name (default: minimal)
   brand:                      # Optional CSS variable overrides
@@ -44,6 +44,7 @@ agentpreso:
 paginate: true                # Show slide numbers (Marp standard)
 header: "Acme Corp"           # Header text on every slide (Marp standard)
 footer: "Confidential"        # Footer text on every slide (Marp standard)
+# Per-slide overrides — see "Slide Numbers" section below
 ---
 ```
 
@@ -66,13 +67,13 @@ agentpreso:
     --font-body: "Helvetica, sans-serif"
 ```
 
-See [./themes.md](./themes.md) for all available CSS variables.
+See [Themes > CSS Variables](./themes.md#available-css-variables) for all available variables.
 
 ### `agentpreso.vars`
 
-Default values for `{{variable}}` placeholders. These are the lowest-priority source -- overridden by `--vars` files and `--var` flags at render time.
+Default values for `{{variable}}` placeholders. These are the lowest-priority source — overridden by `--vars` files and `--var` flags at render time. See [Template Variables](./template-variables.md).
 
-## Slide Separators
+## Slide separators
 
 Slides are separated by `---` on its own line:
 
@@ -90,7 +91,7 @@ More content
 
 The first slide starts after the frontmatter closing `---`.
 
-## Layout Directives
+## Layout directives
 
 Apply a layout by adding `<!-- _class: layout-name -->` at the start of a slide:
 
@@ -110,7 +111,7 @@ The `_class` directive is a standard Marp/Marpit feature. The underscore prefix 
 <!-- class: bullets -->
 ```
 
-### Available Layouts
+### Available layouts
 
 | Layout | Category | Description |
 |--------|----------|-------------|
@@ -130,9 +131,9 @@ The `_class` directive is a standard Marp/Marpit feature. The underscore prefix 
 | `quote` | Emphasis | Centered blockquote |
 | `summary` | Closing | Checkmarked key takeaways |
 
-See [./slide-layouts.md](./slide-layouts.md) for examples and usage guidance.
+See [Use Slide Layouts](./slide-layouts.md) for examples and usage guidance.
 
-### Dark Mode with `invert`
+### Dark mode with `invert`
 
 Flip any slide to the theme's dark palette with `<!-- _class: invert -->`:
 
@@ -143,32 +144,34 @@ Flip any slide to the theme's dark palette with `<!-- _class: invert -->`:
 
 ## Dark Slide
 
-Dark background, light text -- uses the theme's dark color palette.
+Dark background, light text — uses the theme's dark color palette.
 ```
 
 Combine `invert` with any layout: `<!-- _class: invert bullets -->`.
 
-All embedded content (charts, Mermaid diagrams, generated images) automatically adapts its colors to the slide's background mode.
+All embedded content (charts, Mermaid diagrams, Excalidraw, generated images) automatically adapts its colors to the slide's background mode.
 
-## Column Markers
+## Column markers
 
-Split content into columns with `::left::`, `::right::`, and `::center::`:
+Split content into columns with `::: left`, `::: right`, and `::: center`:
 
 ```markdown
 <!-- _class: two-col -->
 
 ## Heading (spans full width)
 
-::left::
+::: left
 Left column content
+:::
 
-::right::
+::: right
 Right column content
+:::
 ```
 
 Content before the first marker becomes a heading row spanning all columns. Use with `two-col`, `two-col-wide-right`, and `three-col` layouts.
 
-## Standard Markdown
+## Standard markdown
 
 All standard markdown is supported:
 
@@ -189,7 +192,7 @@ All standard markdown is supported:
 
 ## Images
 
-### Uploaded Assets
+### Uploaded assets
 
 Upload files to R2 storage and reference them by URI:
 
@@ -199,7 +202,7 @@ Upload files to R2 storage and reference them by URI:
 
 Upload via CLI (`agentpreso push` automatically uploads referenced assets), API (`POST /api/assets`), or MCP (`upload_asset`).
 
-### Background Images
+### Background images
 
 Use Marp's `bg` keyword in the alt text:
 
@@ -239,7 +242,7 @@ data:
 
 Chart data is YAML. Multiple datasets are supported. Colors default to the theme palette if omitted. `{{variable}}` placeholders are substituted inside chart blocks.
 
-See [./charts-diagrams.md](./charts-diagrams.md) for full syntax.
+See [Add Charts and Diagrams](./charts-diagrams.md) for full syntax.
 
 ## Diagrams
 
@@ -258,9 +261,9 @@ graph LR
 
 Diagrams are rendered server-side as SVGs. Colors inherit from the active theme. `{{variable}}` placeholders are substituted inside mermaid blocks.
 
-See [./charts-diagrams.md](./charts-diagrams.md) for examples.
+See [Add Charts and Diagrams](./charts-diagrams.md) for examples.
 
-## Template Variables
+## Template variables
 
 `{{variable}}` placeholders in the slide body are replaced at render time:
 
@@ -270,7 +273,7 @@ See [./charts-diagrams.md](./charts-diagrams.md) for examples.
 Deal size: {{deal_size}}
 ```
 
-### Where Substitution Applies
+### Where substitution applies
 
 | Context | Substituted? |
 |---------|-------------|
@@ -288,15 +291,11 @@ Deal size: {{deal_size}}
 |---------|---------|
 | `{{name}}` | Simple variable lookup |
 | `{{a.b.c}}` | Dot notation for nested objects |
-| `\{{escaped}}` | Literal `{{escaped}}` -- not substituted |
+| `\{{escaped}}` | Literal `{{escaped}}` — not substituted |
 
-### Variable Sources (priority order)
+See [Use Template Variables](./template-variables.md) for the complete guide.
 
-1. `--var` CLI flags (highest)
-2. `--vars` YAML/JSON file
-3. `agentpreso.vars` in frontmatter (lowest)
-
-## Slide Numbers
+## Slide numbers
 
 Enable page numbers globally in frontmatter:
 
@@ -307,7 +306,9 @@ paginate: true
 ---
 ```
 
-### Per-Slide Overrides
+Every slide shows a page number in the bottom-right corner.
+
+### Per-slide overrides
 
 Control page numbers on individual slides with the `_paginate` directive:
 
@@ -339,7 +340,7 @@ paginate: true
 
 # Welcome
 
-Opening title -- no page number, not counted
+Opening title — no page number, not counted
 
 ---
 
@@ -359,10 +360,12 @@ Shows "2" in the corner
 
 # Thank You
 
-Closing slide -- page number hidden
+Closing slide — page number hidden
 ```
 
-## Speaker Notes
+The `_paginate` directive uses the underscore prefix (like `_class`), meaning it applies only to the current slide.
+
+## Speaker notes
 
 Add speaker notes with Marp's HTML comment syntax:
 
@@ -377,7 +380,7 @@ Only visible in presenter mode.
 -->
 ```
 
-## Scoped Styles
+## Scoped styles
 
 Apply CSS to a single slide with Marp's `<style scoped>`:
 

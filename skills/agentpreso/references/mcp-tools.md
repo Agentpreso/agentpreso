@@ -59,6 +59,7 @@ Browse available presentation themes.
 
 > "What themes are available?"
 
+
 ---
 
 ### `create_theme`
@@ -105,6 +106,7 @@ Create a new custom presentation theme with optional logo configuration.
 
 > "Create a theme called 'my-brand' with our company logo in the bottom-right corner."
 
+
 ---
 
 ### `update_theme`
@@ -137,6 +139,7 @@ Update a custom theme's properties including logo configuration.
 
 > "Update the my-brand theme to put the logo in the top-left corner."
 
+
 ---
 
 ### `delete_theme`
@@ -161,6 +164,7 @@ Delete a custom theme. Cannot delete built-in themes.
 **Example conversation:**
 
 > "Delete the my-brand theme."
+
 
 ---
 
@@ -364,7 +368,7 @@ Export a deck to HTML, PDF, or editable PowerPoint.
 
 **PPTX Format Notes:**
 
-- PPTX exports produce **editable slides** -- text, bullets, and tables can be modified directly in PowerPoint
+- PPTX exports produce **editable slides** — text, bullets, and tables can be modified directly in PowerPoint
 - Diagrams and charts are embedded as high-quality PNG images
 - Theme colors and fonts are applied to the PPTX theme
 
