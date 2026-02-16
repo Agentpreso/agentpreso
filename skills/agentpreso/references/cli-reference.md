@@ -2,18 +2,15 @@
 
 The AgentPreso CLI is a standalone binary that works with local files and cloud storage. No Node.js required.
 
-## Install
-
-```bash
-curl -fsSL https://agentpreso.com/install.sh | sh
-```
-
 ## Global Options
+
+These options apply to all commands:
 
 | Option | Description |
 |--------|-------------|
 | `--help`, `-h` | Show help for a command |
 | `--version`, `-v` | Show CLI version |
+| `--config <path>` | Use a custom config file |
 | `--quiet`, `-q` | Suppress non-error output |
 | `--verbose` | Show detailed output |
 
@@ -132,7 +129,7 @@ agentpreso render proposal.md --vars defaults.yaml --var company="Override"
 
 **PPTX Export Notes:**
 
-- PPTX exports produce **editable slides** -- text, bullets, and tables can be modified directly in PowerPoint
+- PPTX exports produce **editable slides** — text, bullets, and tables can be modified directly in PowerPoint
 - Diagrams (Mermaid) and charts are embedded as high-quality PNG images
 - Theme colors and fonts are applied to the PPTX theme
 - Powered by Pandoc for reliable conversion
@@ -236,10 +233,6 @@ sales-pitch       Enterprise Sales Deck    3 days ago
 onboarding        New Hire Onboarding      1 week ago
 ```
 
-### `agentpreso preview <file> -s <slide>`
-
-Preview a single slide as PNG image.
-
 ## Theme Commands
 
 ### `agentpreso themes`
@@ -255,6 +248,18 @@ agentpreso themes
 | Option | Description |
 |--------|-------------|
 | `--json` | Output as JSON |
+
+**Output:**
+
+```
+NAME        DESCRIPTION                              TYPE
+minimal     Clean, lots of whitespace                built-in
+dark        Dark background, high contrast           built-in
+corporate   Professional, muted blues/grays          built-in
+creative    Bold colors, modern typography           built-in
+agentpreso  Navy and tangerine brand theme           built-in
+my-brand    Custom company branding                  custom
+```
 
 ### `agentpreso themes add <path>`
 
@@ -351,45 +356,39 @@ Delete a custom theme.
 agentpreso themes delete my-brand
 ```
 
-## Asset Commands
+## Configuration Commands
 
-### `agentpreso assets upload <file>`
+### `agentpreso config`
 
-Upload image for use in slides. Returns asset URI.
+Show current configuration.
 
-### `agentpreso assets`
+```bash
+agentpreso config
+```
 
-List uploaded assets.
+### `agentpreso config set <key> <value>`
 
-## Content Generation
+Set a configuration value.
 
-### `agentpreso add-graphic <slug> "prompt"`
+```bash
+agentpreso config set defaults.theme corporate
+```
 
-AI-generate image into deck.
+**Available settings:**
 
-### `agentpreso render-chart <file>`
+| Key | Description |
+|-----|-------------|
+| `server.url` | API server URL |
+| `defaults.theme` | Default theme for new decks |
+| `defaults.format` | Default render format |
 
-Render chart YAML to SVG.
+### `agentpreso config reset`
 
-### `agentpreso render-diagram <file>`
+Reset configuration to defaults.
 
-Render Mermaid to SVG.
-
-## Sharing
-
-### `agentpreso share <slug>`
-
-Generate public share link.
-
-### `agentpreso share <slug> --private`
-
-Revoke public access.
-
-## Update
-
-### `agentpreso update`
-
-Check for and install CLI updates.
+```bash
+agentpreso config reset
+```
 
 ## Configuration Files
 

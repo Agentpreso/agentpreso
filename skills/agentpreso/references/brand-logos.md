@@ -1,8 +1,8 @@
-# Brand Logos
+# How to Set Up Brand Logos
 
-Add your logo to a theme so it appears automatically on every slide -- with control over position, size, and different variants for light and dark backgrounds.
+Add your logo to a theme so it appears automatically on every slide — with control over position, size, and different variants for light and dark backgrounds.
 
-## Quick Setup with the CLI
+## Quick setup with the CLI
 
 The simplest way to add a logo to a theme:
 
@@ -19,7 +19,7 @@ Or update an existing theme:
 agentpreso themes update my-brand --logo ./logo.svg
 ```
 
-## Light and Dark Variants
+## Add light and dark variants
 
 If your slides use both light and dark backgrounds, provide two logo versions:
 
@@ -31,12 +31,12 @@ agentpreso themes add ./my-theme/ \
   --logo-size medium
 ```
 
-- **Primary logo** (`--logo`) -- for light backgrounds (typically a dark/colored logo)
-- **Light variant** (`--logo-light`) -- for dark backgrounds (typically a white/light logo)
+- **Primary logo** (`--logo`) — for light backgrounds (typically a dark/colored logo)
+- **Light variant** (`--logo-light`) — for dark backgrounds (typically a white/light logo)
 
 The `variant` property in placement rules controls which is used per slide type.
 
-## Position Options
+## Choose a position
 
 Logos can be placed in 9 positions:
 
@@ -65,7 +65,7 @@ agentpreso themes update my-brand --logo-position top-left
 | Section dividers | `none` or `bottom-center` | Clean, focused |
 | Dark slides | Same position, `light` variant | Consistent placement |
 
-## Size Options
+## Choose a size
 
 **Preset sizes:**
 
@@ -83,9 +83,7 @@ agentpreso themes add ./my-theme/ --logo ./logo.svg --logo-size 80x40
 
 Width and height maintain aspect ratio if only one is specified.
 
-## Page Filtering
-
-Control which slides show the logo:
+## Control which slides show the logo
 
 ```bash
 agentpreso themes add ./my-theme/ --logo ./logo.svg --logo-pages content
@@ -99,7 +97,7 @@ agentpreso themes add ./my-theme/ --logo ./logo.svg --logo-pages content
 | `first-and-last` | First and last slides |
 | `content` | All slides except first and last |
 
-## Advanced: Per-Slide-Type Rules
+## Advanced: per-slide-type rules
 
 For fine-grained control, use a JSON placement configuration. Different slide types (based on their `_class` directive) get different logo behavior:
 
@@ -149,19 +147,40 @@ agentpreso themes update my-brand --logo-placement-json '{
 }'
 ```
 
-### Placement Rule Properties
+### Placement rule properties
 
 | Property | Type | Description |
 |----------|------|-------------|
 | `position` | string | One of the 9 positions, or `none` to hide |
 | `size` | string or object | `small`, `medium`, `large`, or `{ "width": N, "height": N }` |
 | `opacity` | number | 0.0 to 1.0 (default: 1.0) |
-| `margin` | number or object | Pixels from edge -- single number or `{ "top", "right", "bottom", "left" }` |
-| `variant` | string | `"default"` or `"light"` -- which logo asset to use |
+| `margin` | number or object | Pixels from edge — single number or `{ "top", "right", "bottom", "left" }` |
+| `variant` | string | `"default"` or `"light"` — which logo asset to use |
 
 The `default` rule is required. Other rules are optional overrides for specific slide classes.
 
-## Set Up Logos via MCP
+## Set up logos via the API
+
+```bash
+# Upload the logo file
+LOGO_ID=$(curl -X POST https://api.agentpreso.com/api/assets \
+  -H "Authorization: Bearer ap_..." \
+  -F "file=@logo.png" \
+  | jq -r '.data.id')
+
+# Create theme with logo
+curl -X POST https://api.agentpreso.com/api/themes \
+  -H "Authorization: Bearer ap_..." \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "my-brand",
+    "css": "...",
+    "logoAssetId": "'$LOGO_ID'",
+    "logoPlacement": "{\"default\":{\"position\":\"bottom-right\",\"size\":\"small\"}}"
+  }'
+```
+
+## Set up logos via MCP
 
 ```json
 {
@@ -176,10 +195,10 @@ The `default` rule is required. Other rules are optional overrides for specific 
 }
 ```
 
-## Best Practices
+## Best practices
 
-- **Use SVG** for logos -- they render crisp at any size
-- **Small (40px)** for content slides -- subtle, professional
+- **Use SVG** for logos — they render crisp at any size
+- **Small (40px)** for content slides — subtle, professional
 - **Provide both variants** if your deck uses dark backgrounds or `full-bleed` layouts
-- **Hide on quote slides** -- `"quote": { "position": "none" }` keeps the focus on the quote
-- **Consistent margins** -- use the same margin value across all rules for alignment
+- **Hide on quote slides** — `"quote": { "position": "none" }` keeps the focus on the quote
+- **Consistent margins** — use the same margin value across all rules for alignment
