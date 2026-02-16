@@ -133,6 +133,14 @@ Description of the second option.
 - **One idea per slide** — if you have two points, make two slides. Density kills clarity.
 - **Preview before you are done** — render and review. Adjust text fitting, check image placement, verify chart readability.
 
+## Review Strategy
+
+After creating a deck, preview every slide and review for quality. Two approaches:
+
+**Parallel (recommended when subagents are available):** Spawn read-only subagents to review slide PNGs in parallel — one per slide or batch of 2-3. Each subagent checks the 3-second test, title quality, text density, visual presence, and layout fit, then reports findings as text. The parent agent collects findings, edits the `.md` file once, and re-previews only changed slides. See `commands/create-deck.md` for the full protocol.
+
+**Sequential (default):** Review each slide preview yourself, fix issues, re-push, re-preview until satisfied.
+
 ## Reference Files
 
 Read these on demand for detailed guidance:
