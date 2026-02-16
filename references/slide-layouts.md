@@ -1,8 +1,8 @@
-# Slide Layouts
+# How to Use Slide Layouts
 
-Layouts control how content is arranged on a slide -- centered titles, bullet lists, two-column comparisons, full-bleed images, and more. Apply a layout with the `_class` directive in an HTML comment.
+Layouts control how content is arranged on a slide — centered titles, bullet lists, two-column comparisons, full-bleed images, and more. Apply a layout with the `_class` directive in an HTML comment.
 
-## Applying a Layout
+## Applying a layout
 
 Add `<!-- _class: layout-name -->` at the start of a slide:
 
@@ -14,21 +14,20 @@ Add `<!-- _class: layout-name -->` at the start of a slide:
 # Main Title
 ## Subtitle
 
-**Speaker Name** -- Date
+**Speaker Name** — Date
 
 ---
 ```
 
 The `_class` directive is a standard Marp feature. It adds a CSS class to the `<section>` element for that slide.
 
-## Available Layouts
+## Available layouts
 
 AgentPreso provides 15 built-in layouts across six categories. All built-in themes support these layouts.
 
-### Opening Slides
+### Opening slides
 
 #### `title-hero`
-
 Centered title slide with a distinct background. Use for the first slide.
 
 ```markdown
@@ -37,11 +36,10 @@ Centered title slide with a distinct background. Use for the first slide.
 # Presentation Title
 ## Subtitle or Tagline
 
-**Your Name** -- Date
+**Your Name** — Date
 ```
 
 #### `chapter`
-
 Section divider with a large heading. Use to separate major sections.
 
 ```markdown
@@ -52,7 +50,6 @@ Section divider with a large heading. Use to separate major sections.
 ```
 
 #### `full-bleed-title`
-
 Title text over a full-bleed background image.
 
 ```markdown
@@ -63,10 +60,9 @@ Title text over a full-bleed background image.
 ![bg](asset://background-image)
 ```
 
-### Content Slides
+### Content slides
 
 #### `focus`
-
 A single idea, centered. Use for key messages or transitions.
 
 ```markdown
@@ -78,8 +74,7 @@ is that simplicity wins.
 ```
 
 #### `bullets`
-
-Standard bullet list -- the workhorse layout.
+Standard bullet list — the workhorse layout.
 
 ```markdown
 <!-- _class: bullets -->
@@ -92,8 +87,7 @@ Standard bullet list -- the workhorse layout.
 ```
 
 #### `steps`
-
-Numbered sequence -- for processes, timelines, or ordered lists.
+Numbered sequence — for processes, timelines, or ordered lists.
 
 ```markdown
 <!-- _class: steps -->
@@ -107,7 +101,6 @@ Numbered sequence -- for processes, timelines, or ordered lists.
 ```
 
 #### `stats-grid`
-
 A 2x2 grid of key metrics. Use for KPIs and dashboards.
 
 ```markdown
@@ -128,10 +121,9 @@ Customer Rating
 Uptime
 ```
 
-### Comparison Slides
+### Comparison slides
 
 #### `two-col`
-
 Equal 50/50 split. Content before `::right::` goes left, content after goes right.
 
 ```markdown
@@ -153,8 +145,7 @@ Equal 50/50 split. Content before `::right::` goes left, content after goes righ
 ```
 
 #### `two-col-wide-right`
-
-1:2 ratio -- narrow left column, wide right column.
+1:2 ratio — narrow left column, wide right column.
 
 ```markdown
 <!-- _class: two-col-wide-right -->
@@ -176,7 +167,6 @@ graph TD
 ```
 
 #### `three-col`
-
 Equal thirds for comparing three items.
 
 ```markdown
@@ -203,10 +193,9 @@ Equal thirds for comparing three items.
 - Priority support
 ```
 
-### Media Slides
+### Media slides
 
 #### `img-right`
-
 Content on the left, image on the right.
 
 ```markdown
@@ -225,7 +214,6 @@ building the future of presentations.
 ```
 
 #### `img-left`
-
 Image on the left, content on the right.
 
 ```markdown
@@ -240,7 +228,6 @@ analytics and one-click exports.
 ```
 
 #### `full-bleed`
-
 Full-screen image with optional text overlay.
 
 ```markdown
@@ -251,10 +238,9 @@ Full-screen image with optional text overlay.
 ## Overlay Text Here
 ```
 
-### Emphasis Slides
+### Emphasis slides
 
 #### `quote`
-
 Centered blockquote with decorative styling.
 
 ```markdown
@@ -263,13 +249,12 @@ Centered blockquote with decorative styling.
 > "The best presentations are the ones
 > that feel like a conversation."
 >
-> -- Someone Wise
+> — Someone Wise
 ```
 
-### Closing Slides
+### Closing slides
 
 #### `summary`
-
 Key takeaways displayed as a checklist. Use for the final content slide.
 
 ```markdown
@@ -283,7 +268,7 @@ Key takeaways displayed as a checklist. Use for the final content slide.
 - Hiring target exceeded by 20%
 ```
 
-## Column Markers
+## Layouts and column markers
 
 The `::left::`, `::right::`, and `::center::` markers split content into columns. They work with `two-col`, `two-col-wide-right`, and `three-col` layouts.
 
@@ -291,7 +276,7 @@ Content before the first marker goes into a heading row that spans the full widt
 
 ## Tips
 
-- **Don't overuse layouts** -- a mix of `bullets`, `two-col`, and a few visual slides makes a better deck than using every layout
-- **Use `title-hero` for slide 1** and `summary` for the last slide -- this provides natural opening and closing structure
-- **Match layout to content** -- use `stats-grid` for numbers, `quote` for testimonials, `img-right` when you have a supporting image
-- **Plain slides are fine** -- a slide with just a heading and bullets (no `_class`) works well for most content
+- **Don't overuse layouts** — a mix of `bullets`, `two-col`, and a few visual slides makes a better deck than using every layout
+- **Use `title-hero` for slide 1** and `summary` for the last slide — this provides natural opening and closing structure
+- **Match layout to content** — use `stats-grid` for numbers, `quote` for testimonials, `img-right` when you have a supporting image
+- **Plain slides are fine** — a slide with just a heading and bullets (no `_class`) works well for most content

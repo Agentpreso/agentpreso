@@ -1,8 +1,8 @@
-# Charts and Diagrams
+# How to Add Charts and Diagrams
 
-AgentPreso renders charts and diagrams directly from code blocks in your markdown. No screenshots, no external tools -- write the data inline and it renders on the slide.
+AgentPreso renders charts and diagrams directly from code blocks in your markdown. No screenshots, no external tools — write the data inline and it renders on the slide.
 
-## Charts
+## Adding a chart
 
 Use a fenced code block with the `chart` language tag. Chart data is written in YAML:
 
@@ -17,7 +17,7 @@ data:
 ```
 ````
 
-### Supported Chart Types
+### Supported chart types
 
 | Type | Description |
 |------|-------------|
@@ -28,7 +28,7 @@ data:
 | `area` | Filled area chart |
 | `stacked` | Stacked bar chart |
 
-### Multiple Datasets
+### Multiple datasets
 
 Add multiple datasets for comparison:
 
@@ -45,7 +45,7 @@ data:
 ```
 ````
 
-### Custom Colors
+### Custom colors
 
 Specify colors per dataset:
 
@@ -66,9 +66,9 @@ data:
 
 If you omit `color`, the chart uses your theme's color palette (primary, accent, secondary).
 
-### Template Variables in Charts
+### Charts with template variables
 
-Charts support `{{variable}}` substitution -- useful for data-driven decks:
+Charts support `{{variable}}` substitution — useful for data-driven decks:
 
 ````markdown
 ```chart
@@ -87,9 +87,11 @@ Supply the data when rendering:
 agentpreso render deck.md --var quarter_labels='["Q1","Q2","Q3","Q4"]' --var revenue_data='[4.2,5.1,6.3,7.8]'
 ```
 
-## Diagrams
+See [Use Template Variables](./template-variables.md) for more details.
 
-Use a fenced code block with the `mermaid` language tag. AgentPreso renders Mermaid diagrams server-side as SVGs.
+## Adding a diagram
+
+Use a fenced code block with the `mermaid` language tag. AgentPreso renders [Mermaid](https://mermaid.js.org/) diagrams server-side as SVGs.
 
 ### Flowchart
 
@@ -104,7 +106,7 @@ graph LR
 ```
 ````
 
-### Sequence Diagram
+### Sequence diagram
 
 ````markdown
 ```mermaid
@@ -119,9 +121,9 @@ sequenceDiagram
 ```
 ````
 
-### Supported Diagram Types
+### Other supported diagram types
 
-| Type | Mermaid Syntax | Use Case |
+| Type | Mermaid syntax | Use case |
 |------|---------------|----------|
 | Flowchart | `graph TD` or `graph LR` | Processes, pipelines |
 | Sequence | `sequenceDiagram` | API flows, interactions |
@@ -132,11 +134,11 @@ sequenceDiagram
 | Pie | `pie` | Simple proportions |
 | Mindmap | `mindmap` | Brainstorming |
 
-### Theme Integration
+### Theme integration
 
 Diagrams automatically use your theme's colors. Mermaid inherits `--primary-color`, `--secondary-color`, and `--accent-color` from the active theme, so diagrams match the rest of your slides.
 
-## Combining with Layouts
+## Combining charts and diagrams with layouts
 
 Charts and diagrams work in any layout. Place them alongside text using column layouts:
 
@@ -151,8 +153,8 @@ Our API response times improved 40% after the
 infrastructure migration.
 
 Key improvements:
-- p50 latency: 45ms to 28ms
-- p99 latency: 200ms to 120ms
+- p50 latency: 45ms → 28ms
+- p99 latency: 200ms → 120ms
 
 ::right::
 

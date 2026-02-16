@@ -1,16 +1,8 @@
-# Export Formats
+# How to Export to PDF and PowerPoint
 
 AgentPreso renders your markdown deck to three formats: HTML for web viewing, PDF for sharing and printing, and PPTX for editing in PowerPoint or Google Slides.
 
-## Three Formats
-
-| Format | Editable | Best For | File Size |
-|--------|----------|----------|-----------|
-| HTML | View only | Web sharing, embedding, offline viewing | Smallest |
-| PDF | View only | Sharing, printing, archiving | Medium |
-| PPTX | Yes (text, bullets, tables) | Handoff to non-technical collaborators | Largest |
-
-## CLI Export
+## Export from the CLI
 
 ### HTML (default)
 
@@ -18,7 +10,7 @@ AgentPreso renders your markdown deck to three formats: HTML for web viewing, PD
 agentpreso render deck.md
 ```
 
-Produces `deck.html` -- a self-contained file you can open in any browser.
+Produces `deck.html` — a self-contained file you can open in any browser.
 
 ### PDF
 
@@ -26,7 +18,7 @@ Produces `deck.html` -- a self-contained file you can open in any browser.
 agentpreso render deck.md --format pdf
 ```
 
-Produces `deck.pdf` -- print-ready with all charts, diagrams, and theme styling baked in.
+Produces `deck.pdf` — print-ready with all charts, diagrams, and theme styling baked in.
 
 ### Editable PowerPoint
 
@@ -34,15 +26,15 @@ Produces `deck.pdf` -- print-ready with all charts, diagrams, and theme styling 
 agentpreso render deck.md --format pptx
 ```
 
-Produces `deck.pptx` -- an editable file where text, bullets, and tables can be modified directly in PowerPoint or Google Slides.
+Produces `deck.pptx` — an editable file where text, bullets, and tables can be modified directly in PowerPoint or Google Slides.
 
-### Custom Output Path
+### Custom output path
 
 ```bash
 agentpreso render deck.md --format pdf --output ./exports/final.pdf
 ```
 
-### Render with Template Variables
+### Render with template variables
 
 If your deck uses `{{variable}}` placeholders, supply values at render time:
 
@@ -51,9 +43,11 @@ agentpreso render proposal.md --format pdf --vars client-data.yaml
 agentpreso render proposal.md --format pdf --var company="Contoso" --var deal_size="\$1.2M"
 ```
 
-## API Export
+See [Use Template Variables](./template-variables.md) for details.
 
-### Render a Stored Deck
+## Export from the API
+
+### Render a stored deck
 
 ```bash
 curl -X POST https://api.agentpreso.com/api/decks/DECK_ID/render \
@@ -74,7 +68,7 @@ Returns a presigned download URL:
 }
 ```
 
-### Render Raw Markdown
+### Render raw markdown
 
 Render without storing a deck first:
 
@@ -89,7 +83,7 @@ curl -X POST https://api.agentpreso.com/api/render \
   }'
 ```
 
-### Render with Variables via API
+### Render with variables via API
 
 ```json
 {
@@ -102,7 +96,7 @@ curl -X POST https://api.agentpreso.com/api/render \
 }
 ```
 
-## MCP Export
+## Export via MCP
 
 Ask your AI agent:
 
@@ -122,11 +116,11 @@ Or programmatically:
 
 The agent receives a download URL and can share it with the user.
 
-## Format Details
+## What to know about each format
 
 ### HTML
 
-- Self-contained single file -- works offline
+- Self-contained single file — works offline
 - Interactive slide navigation (arrow keys, click)
 - Smallest file size
 - Best for web sharing and embedding
@@ -141,7 +135,7 @@ The agent receives a download URL and can share it with the user.
 
 ### PPTX (PowerPoint)
 
-- **Text, bullets, and tables are editable** -- recipients can modify content in PowerPoint or Google Slides
+- **Text, bullets, and tables are editable** — recipients can modify content in PowerPoint or Google Slides
 - Charts and diagrams are embedded as high-quality PNG images (not editable as native chart objects)
 - Theme colors and fonts are applied to the PPTX theme
 - Compatible with PowerPoint, Google Slides, Keynote, and LibreOffice Impress
