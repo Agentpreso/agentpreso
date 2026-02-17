@@ -310,20 +310,33 @@ agentpreso themes add ./my-theme \
   --logo-placement-json '{"default":{"position":"bottom-right","size":"small"},"lead":{"position":"top-left","size":"large"}}'
 ```
 
-### `agentpreso themes update <name>`
+### `agentpreso themes update <name> [theme-file]`
 
-Update a custom theme's logo configuration.
+Update a custom theme. Pass a `theme.yaml` file to update the full manifest (colors, fonts, style), or use flags for targeted updates.
 
 ```bash
+# Update from theme.yaml — re-assembles CSS, auto-discovers overrides.css and logos
+agentpreso themes update my-brand ./my-theme/theme.yaml
+
+# Update just the CSS overrides
+agentpreso themes update my-brand --css ./overrides.css
+
+# Update logo
 agentpreso themes update my-brand --logo ./new-logo.png
 ```
+
+When a `theme.yaml` file is provided, the command:
+- Reads the manifest and sends it to the server for CSS assembly
+- Auto-discovers `overrides.css` in the same directory (appended to assembled CSS)
+- Auto-discovers and uploads logo files (`logo.svg`, `logo-alt.svg`, etc.) from the same directory
+- Derives logo placement from the manifest's `logo` section
 
 **Logo Options:** Same as `themes add` above.
 
 **Examples:**
 
 ```bash
-# Update logo position
+# Update logo position only
 agentpreso themes update my-brand --logo-position top-left
 
 # Update with new logo file and size
