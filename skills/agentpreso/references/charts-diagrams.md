@@ -4,16 +4,17 @@ AgentPreso renders charts and diagrams directly from code blocks in your markdow
 
 ## Adding a chart
 
-Use a fenced code block with the `chart` language tag. Chart data is written in YAML:
+Use a fenced code block with the `chart` language tag. Chart data is written in YAML.
+
+### Simple chart (single series)
 
 ````markdown
 ```chart
 type: bar
+title: Sales by Quarter
 data:
   labels: [Q1, Q2, Q3, Q4]
-  datasets:
-    - label: Revenue ($M)
-      data: [4.2, 5.1, 6.3, 7.8]
+  values: [4.2, 5.1, 6.3, 7.8]
 ```
 ````
 
@@ -22,72 +23,50 @@ data:
 | Type | Description |
 |------|-------------|
 | `bar` | Vertical bar chart |
+| `bar-horizontal` | Horizontal bar chart |
 | `line` | Line chart with data points |
-| `pie` | Pie chart |
-| `donut` | Donut (ring) chart |
-| `area` | Filled area chart |
-| `stacked` | Stacked bar chart |
+| `pie` | Pie chart (simple data only) |
+| `donut` | Donut (ring) chart (simple data only) |
 
-### Multiple datasets
+### Multiple series
 
-Add multiple datasets for comparison:
+Compare multiple data series using `x` for axis labels and `series` for the data:
 
 ````markdown
 ```chart
 type: bar
 data:
-  labels: [Q1, Q2, Q3, Q4]
-  datasets:
-    - label: Revenue
+  x: [Q1, Q2, Q3, Q4]
+  series:
+    - name: Revenue
       data: [4.2, 5.1, 6.3, 7.8]
-    - label: Costs
+    - name: Costs
       data: [3.1, 3.5, 4.0, 4.2]
 ```
 ````
 
+> **Alias:** You can also use `labels` instead of `x`, `datasets` instead of `series`, and `label` instead of `name`. Both formats are equivalent.
+
 ### Custom colors
 
-Specify colors per dataset:
+Specify colors per series:
 
 ````markdown
 ```chart
 type: line
 data:
-  labels: [Jan, Feb, Mar, Apr, May]
-  datasets:
-    - label: Users
+  x: [Jan, Feb, Mar, Apr, May]
+  series:
+    - name: Users
       data: [100, 150, 300, 450, 600]
       color: "#2563eb"
-    - label: Sessions
+    - name: Sessions
       data: [200, 350, 500, 800, 1200]
       color: "#16a34a"
 ```
 ````
 
 If you omit `color`, the chart uses your theme's color palette (primary, accent, secondary).
-
-### Charts with template variables
-
-Charts support `{{variable}}` substitution — useful for data-driven decks:
-
-````markdown
-```chart
-type: bar
-data:
-  labels: {{quarter_labels}}
-  datasets:
-    - label: Revenue
-      data: {{revenue_data}}
-```
-````
-
-Supply the data when rendering:
-
-```bash
-agentpreso render deck.md --var quarter_labels='["Q1","Q2","Q3","Q4"]' --var revenue_data='[4.2,5.1,6.3,7.8]'
-```
-
-See [Use Template Variables](./template-variables.md) for more details.
 
 ## Adding a diagram
 
@@ -162,11 +141,11 @@ Key improvements:
 ```chart
 type: line
 data:
-  labels: [Jan, Feb, Mar, Apr, May, Jun]
-  datasets:
-    - label: p50 (ms)
+  x: [Jan, Feb, Mar, Apr, May, Jun]
+  series:
+    - name: p50 (ms)
       data: [45, 42, 38, 32, 30, 28]
-    - label: p99 (ms)
+    - name: p99 (ms)
       data: [200, 180, 160, 140, 130, 120]
 ```
 :::
