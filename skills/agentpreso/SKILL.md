@@ -69,12 +69,12 @@ Subtitle or tagline
 
 # Comparison
 
-::left::
+::: left
 
 **Option A**
 Description of the first option.
 
-::right::
+::: right
 
 **Option B**
 Description of the second option.
@@ -83,11 +83,11 @@ Description of the second option.
 **Key syntax:**
 - `---` separates slides
 - `<!-- _class: layout-name -->` sets a slide layout
-- `::left::`, `::right::`, `::center::` mark columns
+- `::: left`, `::: right`, `::: center` mark columns
 - `<!-- _class: invert -->` enables dark mode on a slide
 - `{{variable}}` template variables replaced at render time
 - `asset://filename.png` references uploaded images
-- Chart blocks: `` ```chart `` with YAML (type, labels, datasets)
+- Chart blocks: `` ```chart `` with YAML (type, data with labels/values or x/series)
 - Diagram blocks: `` ```mermaid `` with Mermaid syntax
 - AI images: `` ```generated_image `` with a text prompt
 
