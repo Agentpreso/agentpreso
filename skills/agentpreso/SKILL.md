@@ -67,9 +67,9 @@ AgentPreso uses a **local-first** workflow: edit markdown files locally, push to
 3. **Push**: `agentpreso push deck.md` — uploads to cloud, prints a **dashboard link** (requires login)
 4. **Preview**: `agentpreso preview deck.md -s 1` — check each slide as PNG
 5. **Iterate**: Edit the local file, re-push, re-preview until satisfied
-6. **Deliver**: Always give the user the dashboard URL from `push` so they can view their slides. Use `agentpreso share` for a public link anyone can access without login.
-6. **Export**: `agentpreso render deck.md --format pdf` — check response for `warnings`
-7. **Share**: `agentpreso share deck-slug` — generate a public share link
+6. **Deliver**: Always give the user the dashboard URL from `push` so they can view their slides
+7. **Export**: `agentpreso render deck.md --format pdf` — check response for `warnings`
+8. **Share** (optional, requires consent): Only if the user explicitly asks for a public link, run `agentpreso share deck-slug`. **You MUST ask the user for confirmation before sharing** — this creates a public URL accessible to anyone without authentication.
 
 For cloud-only editing (no local file), use `agentpreso pull <slug>` to fetch, edit, then `agentpreso push`.
 
@@ -82,13 +82,19 @@ If the preview shows a red error block, the chart/diagram has a syntax error —
 
 ### Sharing
 
-After rendering, generate a share link:
+**WARNING: `agentpreso share` creates a PUBLIC link accessible to anyone without authentication. Never run this command without explicit user consent.** The presentation may contain confidential information.
+
+To generate a share link (only after the user confirms they want a public link):
 
 ```bash
-agentpreso share <deck-id>
+agentpreso share <deck-slug>
 ```
 
-This returns a public URL anyone can view without authentication.
+To revoke public access:
+
+```bash
+agentpreso share <deck-slug> --private
+```
 
 ### Render Warnings
 
