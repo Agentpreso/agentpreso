@@ -201,9 +201,16 @@ agentpreso:
 
 ## Updating a theme
 
-After uploading, update the CSS or logo:
+Update a theme by pointing to the `theme.yaml` file. This re-assembles CSS from the manifest and auto-discovers `overrides.css` and logo files from the same directory:
 
 ```bash
+agentpreso themes update my-brand ./my-theme/theme.yaml
+```
+
+You can also update just the CSS or logo independently:
+
+```bash
+agentpreso themes update my-brand --css ./overrides.css
 agentpreso themes update my-brand --logo ./new-logo.png
 ```
 

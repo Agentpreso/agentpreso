@@ -174,17 +174,13 @@ If no file is specified, pushes all `.md` files in the current directory that ha
 
 | Option | Description |
 |--------|-------------|
-| `--slug` | Override the deck slug (default: filename) |
-| `--force` | Overwrite existing deck without confirmation |
+| `--name <name>` | Override the deck name/slug |
 
 **Examples:**
 
 ```bash
-# Push with custom slug
-agentpreso push deck.md --slug q3-results
-
-# Force overwrite
-agentpreso push deck.md --force
+# Push with custom name
+agentpreso push deck.md --name q3-results
 ```
 
 ### `agentpreso pull <slug>`
@@ -231,6 +227,67 @@ SLUG              TITLE                    UPDATED
 quarterly-review  Q3 2024 Review           2 hours ago
 sales-pitch       Enterprise Sales Deck    3 days ago
 onboarding        New Hire Onboarding      1 week ago
+```
+
+### `agentpreso share <file-or-id>`
+
+Generate or manage a public sharing link for a deck. Accepts a local file path (looks up deck ID from `.agentpreso.json`) or a deck ID directly.
+
+```bash
+agentpreso share presentation.md
+```
+
+**Options:**
+
+| Option | Description |
+|--------|-------------|
+| `--public` | Enable public sharing (default behavior) |
+| `--private` | Disable public sharing |
+| `--revoke` | Revoke public access (alias for `--private`) |
+
+**Examples:**
+
+```bash
+# Enable sharing for a local file
+agentpreso share deck.md
+
+# Enable sharing by deck ID
+agentpreso share abc123
+
+# Disable public sharing
+agentpreso share deck.md --private
+
+# Revoke public access
+agentpreso share deck.md --revoke
+```
+
+### `agentpreso preview <file>`
+
+Preview a specific slide as a PNG image. Useful for AI agent verification of slide output.
+
+```bash
+agentpreso preview presentation.md --slide 1
+```
+
+**Options:**
+
+| Option | Description |
+|--------|-------------|
+| `--slide`, `-s` | **Required.** Slide number to preview (1-indexed) |
+| `--output`, `-o` | Custom output file path (default: `<name>-slide<N>.png`) |
+| `--theme <id>` | Theme ID to use |
+
+**Examples:**
+
+```bash
+# Preview slide 3
+agentpreso preview deck.md --slide 3
+
+# Save to a custom path
+agentpreso preview deck.md --slide 1 --output ./previews/title.png
+
+# Preview with a specific theme
+agentpreso preview deck.md --slide 2 --theme corporate
 ```
 
 ## Theme Commands
@@ -310,20 +367,33 @@ agentpreso themes add ./my-theme \
   --logo-placement-json '{"default":{"position":"bottom-right","size":"small"},"lead":{"position":"top-left","size":"large"}}'
 ```
 
-### `agentpreso themes update <name>`
+### `agentpreso themes update <name> [theme-file]`
 
-Update a custom theme's logo configuration.
+Update a custom theme. Pass a `theme.yaml` file to update the full manifest (colors, fonts, style), or use flags for targeted updates.
 
 ```bash
+# Update from theme.yaml — re-assembles CSS, auto-discovers overrides.css and logos
+agentpreso themes update my-brand ./my-theme/theme.yaml
+
+# Update just the CSS overrides
+agentpreso themes update my-brand --css ./overrides.css
+
+# Update logo
 agentpreso themes update my-brand --logo ./new-logo.png
 ```
+
+When a `theme.yaml` file is provided, the command:
+- Reads the manifest and sends it to the server for CSS assembly
+- Auto-discovers `overrides.css` in the same directory (appended to assembled CSS)
+- Auto-discovers and uploads logo files (`logo.svg`, `logo-alt.svg`, etc.) from the same directory
+- Derives logo placement from the manifest's `logo` section
 
 **Logo Options:** Same as `themes add` above.
 
 **Examples:**
 
 ```bash
-# Update logo position
+# Update logo position only
 agentpreso themes update my-brand --logo-position top-left
 
 # Update with new logo file and size
@@ -354,6 +424,62 @@ Delete a custom theme.
 
 ```bash
 agentpreso themes delete my-brand
+```
+
+## Asset Commands
+
+### `agentpreso assets list`
+
+List all uploaded assets.
+
+```bash
+agentpreso assets list
+```
+
+**Options:**
+
+| Option | Description |
+|--------|-------------|
+| `--format <format>` | Output format: `table` or `json` (default: `table`) |
+
+**Output:**
+
+```
+ID        NAME              TYPE           SIZE
+a1b2c3d4  hero-image.png    image/png      245KB
+e5f6g7h8  logo.svg          image/svg+xml  12KB
+```
+
+### `agentpreso assets upload <file>`
+
+Upload a file as an asset. Returns an `asset://` URI for use in presentations.
+
+```bash
+agentpreso assets upload ./images/hero.png
+```
+
+**Options:**
+
+| Option | Description |
+|--------|-------------|
+| `--name <name>` | Custom filename for the asset |
+
+**Examples:**
+
+```bash
+# Upload with original filename
+agentpreso assets upload ./logo.svg
+
+# Upload with a custom name
+agentpreso assets upload ./photo.jpg --name team-photo.jpg
+```
+
+### `agentpreso assets delete <id>`
+
+Delete an asset by ID.
+
+```bash
+agentpreso assets delete a1b2c3d4
 ```
 
 ## Configuration Commands
