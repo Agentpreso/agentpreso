@@ -64,9 +64,10 @@ AgentPreso uses a **local-first** workflow: edit markdown files locally, push to
 
 1. **Start**: `agentpreso themes` — pick a theme that matches the tone
 2. **Create**: Write a `.md` file (see format below), or `agentpreso new deck.md -t corporate`
-3. **Push**: `agentpreso push deck.md` — uploads to cloud
+3. **Push**: `agentpreso push deck.md` — uploads to cloud, prints a **dashboard link** (requires login)
 4. **Preview**: `agentpreso preview deck.md -s 1` — check each slide as PNG
 5. **Iterate**: Edit the local file, re-push, re-preview until satisfied
+6. **Deliver**: Always give the user the dashboard URL from `push` so they can view their slides. Use `agentpreso share` for a public link anyone can access without login.
 6. **Export**: `agentpreso render deck.md --format pdf` — check response for `warnings`
 7. **Share**: `agentpreso share deck-slug` — generate a public share link
 
