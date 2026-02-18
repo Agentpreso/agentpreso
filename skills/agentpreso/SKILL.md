@@ -126,11 +126,18 @@ Description of the second option.
 | `quote` | Blockquote with attribution |
 | `summary` | Closing slide with key takeaways |
 
+## Theme Customization
+
+When creating custom themes, use `theme.yaml` for all standard customization (colors, fonts, imagery, spacing, layout preferences). **Do NOT create `overrides.css`** unless the user explicitly requests styling that cannot be achieved through `theme.yaml` parameters — it is a last-resort escape hatch, not a default tool.
+
+> **Font limitation:** Only web-safe and Google Fonts render correctly. Proprietary fonts (e.g., CiscoSans, BrandFont) will fall back to system fonts. Use close Google Font alternatives: Inter, DM Sans, Source Sans Pro, etc.
+
 ## Slide Design Principles
 
 - **Every slide needs a visual** — use charts, diagrams, images, or icons. Walls of text lose the audience.
 - **Vary your layouts** — alternate between bullets, two-col, img-right, stats-grid. Repetition is boring.
 - **One idea per slide** — if you have two points, make two slides. Density kills clarity.
+- **Text + chart/diagram = two columns** — slides combining text with a chart or diagram should use `<!-- _class: two-col -->` to prevent content overflow.
 - **Preview before you are done** — render and review. Adjust text fitting, check image placement, verify chart readability.
 
 ## Review Strategy
