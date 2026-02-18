@@ -3,168 +3,276 @@ name: agentpreso
 description: Create professional presentations from markdown. Use when users want to create slides, decks, presentations, or pitch decks. Supports charts, diagrams, themes, and export to PDF/PPTX.
 ---
 
-# AgentPreso — AI-Native Presentations
+# AgentPreso
 
-Create professional slide decks from markdown with charts, diagrams, AI-generated graphics, and 10 built-in themes.
+AI-native presentation platform. Create, edit, and render professional slide decks through natural conversation.
 
-## Quick Start
+## Reading Strategy (for AI agents)
+
+Read this file first. Only read additional docs when needed:
+- Building a custom theme? → `docs/DESIGN-GUIDE.md`, then the Custom Themes section below
+- Adding charts/diagrams? → the Charts and Diagrams section below
+- Logo handling? → the Logos section below
+
+Don't front-load all references — read them just-in-time.
+
+## CLI Quick Reference
 
 ```bash
-# 1. Install the CLI
-curl -fsSL https://agentpreso.com/install.sh | sh
+# Auth
+agentpreso login                          # Authenticate
+agentpreso whoami                         # Check current user
 
-# 2. Authenticate
-agentpreso login
+# Themes
+agentpreso themes                         # List available themes
+agentpreso themes show <name>             # Show theme details
+agentpreso themes add <path>              # Upload custom theme directory
+agentpreso themes update <name> theme.yaml  # Update theme from manifest
+agentpreso themes update <name> --css f.css # Update raw CSS only
+agentpreso themes delete <name>           # Delete custom theme
 
-# 3. Create a deck (generates a markdown file from the theme scaffold)
-agentpreso create my-deck --theme glacier
+# Decks — local-first workflow
+agentpreso new <file> -t <theme>          # Scaffold local markdown file
+agentpreso push [file]                    # Push local file to cloud (creates or updates)
+agentpreso pull <slug>                    # Download cloud deck to local file
+agentpreso list                           # List cloud decks
 
-# 4. Push to cloud
-agentpreso push my-deck.md
+# Rendering
+agentpreso render <file> --format pdf     # Export to html, pdf, or pptx
+agentpreso render <file> --var company="Acme" --vars data.yaml
+agentpreso preview <file> -s 1            # Preview slide as PNG (for verification)
+agentpreso serve <file>                   # Live preview server with hot reload
 
-# 5. Render to PDF
-agentpreso render my-deck.md --format pdf
+# Content generation
+agentpreso add-graphic <slug> "prompt"    # AI-generate image into deck
+agentpreso add-illustration <slug> --file drawing.yaml
+agentpreso render-chart chart.yaml        # Render chart YAML to SVG
+agentpreso render-diagram flow.mmd        # Render Mermaid to SVG
+
+# Assets
+agentpreso assets upload <file>           # Upload image for use in slides
+agentpreso assets                         # List uploaded assets
+
+# Sharing
+agentpreso share <slug>                   # Generate public share link
+agentpreso share <slug> --private         # Revoke public access
 ```
 
-## When to Use
+## Workflow
 
-Activate this skill when the user wants to:
-- Create slides, presentations, decks, or pitch decks
-- Add charts or diagrams to slides
-- Export slides to PDF or PPTX
-- Work with Marp markdown
-- Mentions AgentPreso by name
-- Needs a visual summary, report, or briefing in slide format
+AgentPreso uses a **local-first** workflow: edit markdown files locally, push to cloud for rendering.
+
+1. **Start**: `agentpreso themes` — pick a theme that matches the tone
+2. **Create**: Write a `.md` file (see format below), or `agentpreso new deck.md -t corporate`
+3. **Push**: `agentpreso push deck.md` — uploads to cloud
+4. **Preview**: `agentpreso preview deck.md -s 1` — check each slide as PNG
+5. **Iterate**: Edit the local file, re-push, re-preview until satisfied
+6. **Export**: `agentpreso render deck.md --format pdf` — check response for `warnings`
+7. **Share**: `agentpreso share deck-slug` — generate a public share link
+
+For cloud-only editing (no local file), use `agentpreso pull <slug>` to fetch, edit, then `agentpreso push`.
+
+### Previewing Slides
+
+Use `agentpreso preview <file> -s <n>` to render a single slide as PNG.
+To review multiple slides, run preview for each slide index sequentially.
+Always preview after push to verify charts, diagrams, and images rendered correctly.
+If the preview shows a red error block, the chart/diagram has a syntax error — fix before continuing.
+
+### Sharing
+
+After rendering, generate a share link:
+
+```bash
+agentpreso share <deck-id>
+```
+
+This returns a public URL anyone can view without authentication.
+
+### Render Warnings
+
+After rendering, check the response for `warnings`. If any chart, diagram, or image errors
+occurred, they appear in the warnings array. Fix all warnings before sharing — they indicate
+broken content in the rendered output.
 
 ## Markdown Format
 
-Decks are single `.md` files. Frontmatter sets metadata and theme:
+Standard Marp-compatible markdown. Slides separated by `---`. Frontmatter sets theme and options:
 
 ```markdown
 ---
 marp: true
-theme: glacier
-title: My Presentation
+theme: corporate
+paginate: true
 ---
 
-<!-- _class: title-hero -->
+<!-- _paginate: skip -->
 
-# Presentation Title
-
-Subtitle or tagline
-
----
-
-<!-- _class: bullets -->
-
-# Key Points
-
-- First insight with supporting detail
-- Second insight with data
-- Third insight with takeaway
+# Title Slide
 
 ---
 
-<!-- _class: two-col -->
+## Content Slide
 
-# Comparison
+- Bullet points work naturally
 
-::: left
+---
 
-**Option A**
-Description of the first option.
+<!-- _class: quote -->
 
-::: right
-
-**Option B**
-Description of the second option.
+> "Styled blockquote"
+>
+> — Attribution
 ```
 
-**Key syntax:**
-- `---` separates slides
-- `<!-- _class: layout-name -->` sets a slide layout
-- `::: left`, `::: right`, `::: center` mark columns
-- `<!-- _class: invert -->` enables dark mode on a slide
-- `{{variable}}` template variables replaced at render time
-- `asset://filename.png` references uploaded images
-- Chart blocks: `` ```chart `` with YAML (type, data with labels/values or x/series)
-- Diagram blocks: `` ```mermaid `` with Mermaid syntax
-- AI images: `` ```generated_image `` with a text prompt
+### Pagination directives
 
-## Available Themes
+| Directive | Effect |
+|-----------|--------|
+| `<!-- _paginate: false -->` | Hide page number |
+| `<!-- _paginate: skip -->` | Hide and don't count (use on title) |
+| `<!-- _paginate: hold -->` | Same number as previous slide |
 
-| Theme | Description |
-|-------|-------------|
-| `agentpreso` | Navy & tangerine on warm ivory — the signature theme |
-| `blueprint` | Technical, precise, engineering-focused |
-| `botanica` | Nature-inspired, organic, warm greens |
-| `chalk` | Blackboard-style, handwritten feel |
-| `ember` | Warm, bold, fire-inspired gradients |
-| `glacier` | Cool blues, icy, clean, corporate |
-| `ink` | High-contrast black & white, editorial |
-| `maison` | Elegant, luxury, sophisticated serif |
-| `neon` | Vibrant, futuristic, dark with bright accents |
-| `terminal` | Monospace, developer-focused, green on black |
+### Slide Layouts
 
-## Available Layouts
+Apply with `<!-- _class: layout-name -->`:
 
-| Layout | Description |
-|--------|-------------|
-| `title-hero` | Opening slide with large title and optional subtitle |
-| `chapter` | Section divider with chapter title |
-| `full-bleed-title` | Title over a full-bleed background image |
-| `focus` | Single statement or key number, centered |
-| `bullets` | Bullet list with automatic text fitting |
-| `steps` | Numbered process or workflow steps |
-| `stats-grid` | Grid of key metrics or statistics |
-| `two-col` | Two equal columns side by side |
-| `two-col-wide-right` | Two columns, right column wider |
-| `three-col` | Three equal columns |
-| `img-right` | Content left, image right |
-| `img-left` | Image left, content right |
-| `full-bleed` | Full-bleed image with overlaid text |
-| `quote` | Blockquote with attribution |
-| `summary` | Closing slide with key takeaways |
+| Layout | Use For |
+|--------|---------|
+| `title-hero` | Opening title slide |
+| `chapter` | Section dividers |
+| `bullets` | Standard bullet lists |
+| `steps` | Numbered sequences |
+| `two-col` | Side-by-side content |
+| `img-right` / `img-left` | Text + image split |
+| `quote` | Centered quotation |
+| `summary` | Key takeaways with checkmarks |
+| `stats-grid` | 2x2 metric display |
 
-## Theme Customization
+### Dark Mode Per-Slide
 
-When creating custom themes, use `theme.yaml` for all standard customization (colors, fonts, imagery, spacing, layout preferences). **Do NOT create `overrides.css`** unless the user explicitly requests styling that cannot be achieved through `theme.yaml` parameters — it is a last-resort escape hatch, not a default tool.
+Add `invert` class to flip any slide to dark palette. Combine with layouts:
 
-> **Font limitation:** Only web-safe and Google Fonts render correctly. Proprietary fonts (e.g., CiscoSans, BrandFont) will fall back to system fonts. Use close Google Font alternatives: Inter, DM Sans, Source Sans Pro, etc.
+```markdown
+<!-- _class: invert title-hero -->
+# Dark Opening Slide
+```
+
+Charts, diagrams, and images auto-adapt to dark background.
+
+### Images
+
+Upload first, then reference by asset URI:
+
+```markdown
+![Description](asset://asset_abc123)
+```
+
+### Logos
+
+Use an existing logo file (SVG or PNG). Download it first if needed:
+
+```bash
+curl -o logo.png "https://example.com/logo.png"
+agentpreso assets upload logo.png
+```
+
+Then reference via asset URI in slides, or attach to a theme:
+
+```bash
+agentpreso themes add ./my-theme/ --logo logo.svg
+```
+
+Do NOT attempt to reconstruct logos from HTML/CSS/JS extraction — use intact image files.
+
+### Charts and Diagrams
+
+````markdown
+```chart
+type: bar
+data:
+  labels: [Q1, Q2, Q3, Q4]
+  datasets:
+    - label: Revenue
+      data: [10, 15, 12, 18]
+```
+````
+
+````markdown
+```mermaid
+graph LR
+    A[Start] --> B[Process] --> C[End]
+```
+````
+
+### Template Variables
+
+Define defaults in frontmatter, override at render time:
+
+```markdown
+---
+marp: true
+agentpreso:
+  theme: corporate
+  vars:
+    company: "Acme Corp"
+    deal_size: "$500K"
+---
+
+# Proposal for {{company}}
+Deal size: {{deal_size}}
+```
+
+Override: `agentpreso render deck.md --var company="Contoso" --var deal_size="$1.2M"`
+
+Or from a file: `agentpreso render deck.md --vars overrides.yaml`
 
 ## Slide Design Principles
 
-- **Every slide needs a visual** — use charts, diagrams, images, or icons. Walls of text lose the audience.
-- **Vary your layouts** — alternate between bullets, two-col, img-right, stats-grid. Repetition is boring.
-- **One idea per slide** — if you have two points, make two slides. Density kills clarity.
-- **Text + chart/diagram = two columns** — slides combining text with a chart or diagram should use `<!-- _class: two-col -->` to prevent content overflow.
-- **Preview before you are done** — render and review. Adjust text fitting, check image placement, verify chart readability.
+- **Every slide needs a visual** — chart, diagram, image, or graphic. No text-only slides.
+- **Vary layouts** — don't repeat the same layout consecutively. Good flow: `title-hero` -> `bullets` -> `img-right` -> `stats-grid` -> `two-col` -> `chapter` -> `steps` -> `summary`
+- **One idea per slide** — split dense content across multiple slides.
+- **Preview before done** — always check with `agentpreso preview` before declaring finished.
 
-## Review Strategy
+For detailed theme design guidance (color palettes, typography, CSS variables, logo placement), see [docs/DESIGN-GUIDE.md](./docs/DESIGN-GUIDE.md).
 
-After creating a deck, preview every slide and review for quality. Two approaches:
+## Built-in Themes
 
-**Parallel (recommended when subagents are available):** Spawn read-only subagents to review slide PNGs in parallel — one per slide or batch of 2-3. Each subagent checks the 3-second test, title quality, text density, visual presence, and layout fit, then reports findings as text. The parent agent collects findings, edits the `.md` file once, and re-previews only changed slides. See `commands/create-deck.md` for the full protocol.
+| Theme | Best For |
+|-------|----------|
+| `minimal` | Data-heavy, technical content |
+| `corporate` | Business presentations, proposals |
+| `dark` | Keynotes, product launches |
+| `creative` | Marketing, pitches |
+| `agentpreso` | Navy/tangerine brand theme |
 
-**Sequential (default):** Review each slide preview yourself, fix issues, re-push, re-preview until satisfied.
+### Custom Themes
 
-## Reference Files
+Create a directory with `theme.yaml` (required), optional `overrides.css` and `scaffold.md`, then:
 
-Read these on demand for detailed guidance:
+> **Font limitation:** Only web-safe and Google Fonts render correctly. Proprietary fonts
+> (e.g., CiscoSans, BrandFont) will fall back to system fonts. Use close alternatives:
+> Inter, DM Sans, Source Sans Pro, etc.
 
-| File | Contents |
-|------|----------|
-| `references/cli-reference.md` | Full CLI command reference |
-| `references/mcp-tools.md` | MCP tool reference |
-| `references/slide-layouts.md` | Layout examples and usage |
-| `references/themes.md` | Theme details and customization |
-| `references/charts-diagrams.md` | Chart and diagram syntax |
-| `references/custom-themes.md` | Creating custom themes |
-| `references/markdown-format.md` | Complete markdown syntax |
-| `references/export-formats.md` | Export format details |
-| `references/presentation-craft.md` | Slide design best practices |
-| `references/brand-logos.md` | Logo placement and branding |
+#### Theme Customization Strategy
 
-## Examples
+Use `theme.yaml` manifest options (colors, fonts, imagery) for all standard customization.
+Do NOT create `overrides.css` unless the user explicitly requests styling that cannot be
+achieved through `theme.yaml` parameters. The manifest covers colors, fonts, spacing,
+imagery guidance, and layout preferences — `overrides.css` is a last-resort escape hatch,
+not a default tool.
 
-See the `examples/` directory for complete, valid AgentPreso markdown files demonstrating themes, layouts, charts, and diagrams.
+Usage:
+
+```bash
+agentpreso themes add ./my-theme/
+agentpreso themes add ./my-theme/ --logo logo.svg --logo-position bottom-right --logo-size small
+```
+
+To update an existing theme, point to the theme.yaml file directly:
+
+```bash
+agentpreso themes update my-brand ./my-theme/theme.yaml
+```
+
+This re-assembles CSS from the manifest, auto-discovers `overrides.css` and logo files from the same directory, and updates the theme in-place (preserving logo asset IDs when logos haven't changed).
