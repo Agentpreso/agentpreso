@@ -7,6 +7,28 @@ description: Create professional presentations from markdown. Use when users wan
 
 AI-native presentation platform. Create, edit, and render professional slide decks through natural conversation.
 
+## Getting Started
+
+### 1. Install the CLI
+
+```bash
+curl -fsSL https://agentpreso.com/install.sh | sh
+```
+
+Installs the `agentpreso` binary. Run `agentpreso update` later to get new versions.
+
+### 2. Create an account
+
+Sign up at **https://app.agentpreso.com/register**. An invite code is required during early access — run `agentpreso login` for details on how to request one.
+
+### 3. Authenticate
+
+```bash
+agentpreso login
+```
+
+Prompts for email and password, then saves an API key locally. Verify with `agentpreso whoami`.
+
 ## Reading Strategy (for AI agents)
 
 Read this file first. Only read additional docs when needed:
@@ -299,13 +321,18 @@ For detailed theme design guidance (color palettes, typography, CSS variables, l
 
 ## Built-in Themes
 
-| Theme | Best For |
-|-------|----------|
-| `minimal` | Data-heavy, technical content |
-| `corporate` | Business presentations, proposals |
-| `dark` | Keynotes, product launches |
-| `creative` | Marketing, pitches |
-| `agentpreso` | Navy/tangerine brand theme |
+| Theme | Style | Best For |
+|-------|-------|----------|
+| `agentpreso` | Modern | Navy warmth, tangerine accents — the default brand theme |
+| `ink` | Editorial | Serif typography, newspaper red — reports, longform |
+| `neon` | Cyberpunk | Cyan glow on near-black — product launches, tech keynotes |
+| `terminal` | Retro | Green phosphor CRT — developer content, CLIs |
+| `chalk` | Educational | Handwriting headings, teal — workshops, tutorials |
+| `blueprint` | Technical | Grid overlay, engineering precision — architecture, specs |
+| `ember` | Cinematic | Warm amber on dark — storytelling, brand narratives |
+| `glacier` | Analytical | Cool blues, data-focused — dashboards, analytics |
+| `botanica` | Organic | Forest green, gold serif — sustainability, luxury |
+| `maison` | Luxury | Matte gold, minimalist — high-end proposals, fashion |
 
 ### Custom Themes
 
