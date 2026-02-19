@@ -301,7 +301,7 @@ Or from a file: `agentpreso render deck.md --vars overrides.yaml`
 ## Slide Design Principles
 
 - **Every slide needs a visual** — chart, diagram, image, or graphic. No text-only slides.
-- **Vary layouts** — don't repeat the same layout consecutively. Good flow: `title-hero` -> `bullets` -> `img-right` -> `stats-grid` -> `two-col` -> `chapter` -> `steps` -> `summary`
+- **Vary layouts** — don't repeat the same layout consecutively. Alternate between content, data, media, and comparison layouts to keep the deck visually dynamic.
 - **One idea per slide** — split dense content across multiple slides.
 - **Preview before done** — always check with `agentpreso preview` before declaring finished.
 
