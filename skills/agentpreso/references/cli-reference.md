@@ -229,6 +229,36 @@ sales-pitch       Enterprise Sales Deck    3 days ago
 onboarding        New Hire Onboarding      1 week ago
 ```
 
+### `agentpreso decks list`
+
+List all decks with format options. Alias for `agentpreso list` with additional output formats.
+
+```bash
+agentpreso decks list
+```
+
+**Options:**
+
+| Option | Description |
+|--------|-------------|
+| `--format <format>` | Output format: `table` or `json` (default: `table`) |
+
+### `agentpreso decks show <id>`
+
+Show full details of a deck including ID, slug, title, theme, timestamps, and complete markdown content.
+
+```bash
+agentpreso decks show deck_abc123
+```
+
+### `agentpreso decks delete <id>`
+
+Delete a deck permanently.
+
+```bash
+agentpreso decks delete deck_abc123
+```
+
 ### `agentpreso share <file-or-id>`
 
 Generate or manage a public sharing link for a deck. Accepts a local file path (looks up deck ID from `.agentpreso.json`) or a deck ID directly.
@@ -424,6 +454,104 @@ Delete a custom theme.
 
 ```bash
 agentpreso themes delete my-brand
+```
+
+## Content Generation Commands
+
+### `agentpreso add-graphic <slug> <prompt>`
+
+Generate an AI graphic and add it to a cloud deck. Uses Google Imagen to create images from text prompts.
+
+```bash
+agentpreso add-graphic my-deck "A futuristic cityscape at sunset"
+```
+
+**Options:**
+
+| Option | Description |
+|--------|-------------|
+| `--slide <index>` | Zero-based slide index (creates new slide if omitted) |
+| `--position <pos>` | Image placement: `background`, `inline`, `left`, `right` (default: `inline`) |
+| `--title <text>` | Title for new slide (only when creating a new slide) |
+| `--aspect <ratio>` | Aspect ratio: `1:1`, `16:9`, `9:16`, `4:3`, `3:4` |
+| `--style <style>` | Style: `photo`, `illustration`, `icon`, `abstract`, `minimal` |
+| `--alt <text>` | Alt text for accessibility |
+
+**Examples:**
+
+```bash
+# Add background image to slide 0
+agentpreso add-graphic my-deck "Mountain landscape" --slide 0 --position background
+
+# Add illustration with custom aspect ratio
+agentpreso add-graphic my-deck "Team collaboration" --aspect 16:9 --style illustration
+```
+
+### `agentpreso add-illustration <slug>`
+
+Add an Excalidraw-style hand-drawn illustration to a cloud deck using a YAML DSL.
+
+```bash
+agentpreso add-illustration my-deck --file drawing.yaml
+```
+
+**Options:**
+
+| Option | Description |
+|--------|-------------|
+| `--yaml <yaml>` | Inline YAML DSL content |
+| `--file <path>` | Path to YAML DSL file |
+| `--slide <index>` | Zero-based slide index |
+| `--title <title>` | Title for new slide |
+
+### `agentpreso render-diagram <file>`
+
+Render a Mermaid diagram file to SVG.
+
+```bash
+agentpreso render-diagram flow.mmd
+```
+
+**Options:**
+
+| Option | Description |
+|--------|-------------|
+| `--theme <name>` | Theme name for styling |
+| `-o`, `--output <path>` | Custom output file path |
+
+**Examples:**
+
+```bash
+# Render with a specific theme
+agentpreso render-diagram architecture.mmd --theme corporate
+
+# Custom output path
+agentpreso render-diagram flow.mmd -o ./output/flow.svg
+```
+
+### `agentpreso render-chart <file>`
+
+Render a chart YAML file to SVG.
+
+```bash
+agentpreso render-chart revenue.yaml
+```
+
+**Options:**
+
+| Option | Description |
+|--------|-------------|
+| `--theme <name>` | Theme name for styling |
+| `-o`, `--output <path>` | Custom output file path |
+
+**Examples:**
+
+```bash
+# Render with a specific theme
+agentpreso render-chart metrics.yaml --theme dark
+
+# Custom output path
+agentpreso render-chart revenue.yaml -o ./output/revenue.svg
 ```
 
 ## Asset Commands
