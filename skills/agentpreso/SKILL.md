@@ -144,17 +144,59 @@ paginate: true
 
 Apply with `<!-- _class: layout-name -->`:
 
+**Opening & Closing**
+
 | Layout | Use For |
 |--------|---------|
 | `title-hero` | Opening title slide |
 | `chapter` | Section dividers |
+| `full-bleed-title` | Title over full-bleed background image |
+| `title-img` | Title slide with side image |
+| `quote-hero` | Bold quote as opening/closing statement |
+| `summary` | Key takeaways with checkmarks |
+| `cta` | Call-to-action closing slide |
+
+**Content**
+
+| Layout | Use For |
+|--------|---------|
 | `bullets` | Standard bullet lists |
 | `steps` | Numbered sequences |
-| `two-col` | Side-by-side content |
+| `focus` | Single key message, centered |
+| `definition` | Term/definition pairs |
+| `agenda` | Meeting or talk agenda |
+| `cards` | Card grid for features or concepts |
+
+**Media**
+
+| Layout | Use For |
+|--------|---------|
 | `img-right` / `img-left` | Text + image split |
-| `quote` | Centered quotation |
-| `summary` | Key takeaways with checkmarks |
+| `img-center` | Centered image with caption |
+| `img-top` | Image above text content |
+| `full-bleed` | Full-screen background image |
+| `gallery` | Multi-image grid |
+| `figure` | Wide visual (diagram/chart/image) with brief text |
+
+**Data**
+
+| Layout | Use For |
+|--------|---------|
 | `stats-grid` | 2x2 metric display |
+| `stats-row` | Horizontal row of metrics |
+| `big-number` | Single hero statistic |
+| `timeline` | Horizontal sequence of events |
+
+**Comparison**
+
+| Layout | Use For |
+|--------|---------|
+| `two-col` | Side-by-side content |
+| `two-col-wide-right` | Two columns, right side wider |
+| `three-col` | Three equal columns |
+| `before-after` | Before/after comparison |
+| `pros-cons` | Pros and cons with icons |
+| `matrix` | 2x2 grid of categories |
 
 ### Dark Mode Per-Slide
 
@@ -240,6 +282,18 @@ Or from a file: `agentpreso render deck.md --vars overrides.yaml`
 - **Vary layouts** — don't repeat the same layout consecutively. Good flow: `title-hero` -> `bullets` -> `img-right` -> `stats-grid` -> `two-col` -> `chapter` -> `steps` -> `summary`
 - **One idea per slide** — split dense content across multiple slides.
 - **Preview before done** — always check with `agentpreso preview` before declaring finished.
+
+### Diagrams and Charts — Layout Rules
+
+**Never combine bullet lists (>2 items) with diagrams or charts on the same slide.**
+They compete for vertical space and the diagram overflows. The renderer will reject this with a 422 error.
+
+| Visual scenario | Layout to use | Why |
+|----------------|---------------|-----|
+| Wide diagram + brief context | `figure` | Full-width visual with heading + 1-2 line description |
+| Diagram alongside bullets | `two-col` | Visual in one column, bullets in the other |
+| Full-width chart, minimal text | `figure` or no class | Heading + chart block fills the slide |
+| Chart with detailed breakdown | `two-col` | Chart in one column, bullet legend in the other |
 
 For detailed theme design guidance (color palettes, typography, CSS variables, logo placement), see [docs/DESIGN-GUIDE.md](./docs/DESIGN-GUIDE.md).
 
