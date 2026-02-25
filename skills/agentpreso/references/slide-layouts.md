@@ -19,7 +19,7 @@ Add `<!-- _class: layout-name -->` at the start of a slide:
 ---
 ```
 
-The `_class` directive is a standard Marp feature. It adds a CSS class to the `<section>` element for that slide.
+The `_class` directive adds a CSS class to the `<section>` element for that slide.
 
 ## Available layouts
 

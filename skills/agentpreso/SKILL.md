@@ -126,11 +126,10 @@ broken content in the rendered output.
 
 ## Markdown Format
 
-Standard Marp-compatible markdown. Slides separated by `---`. Frontmatter sets theme and options:
+Standard markdown. Slides separated by `---`. Frontmatter sets theme and options:
 
 ```markdown
 ---
-marp: true
 theme: corporate
 paginate: true
 ---
@@ -282,7 +281,6 @@ Define defaults in frontmatter, override at render time:
 
 ```markdown
 ---
-marp: true
 agentpreso:
   theme: corporate
   vars:

@@ -77,7 +77,7 @@ curl -X POST https://api.agentpreso.com/api/render \
   -H "Authorization: Bearer ap_..." \
   -H "Content-Type: application/json" \
   -d '{
-    "markdown": "---\nmarp: true\n---\n\n# Slide 1\n\nContent",
+    "markdown": "---\ntheme: minimal\n---\n\n# Slide 1\n\nContent",
     "format": "pdf",
     "themeId": "corporate"
   }'

@@ -1,12 +1,11 @@
 # Markdown Format Reference
 
-AgentPreso presentations are single `.md` files using a superset of [Marp](https://marp.app/) markdown. This page documents the complete syntax.
+AgentPreso presentations are single `.md` files using extended markdown with YAML frontmatter. This page documents the complete syntax.
 
 ## File structure
 
 ```markdown
 ---
-marp: true
 agentpreso:
   theme: corporate
 paginate: true
@@ -31,9 +30,8 @@ The YAML block between `---` markers at the top of the file:
 
 ```yaml
 ---
-marp: true                    # Required — enables Marp rendering
+theme: corporate              # Theme name (default: minimal)
 agentpreso:
-  theme: corporate             # Theme name (default: minimal)
   brand:                      # Optional CSS variable overrides
     --primary-color: "#dc2626"
     --accent-color: "#f59e0b"
@@ -41,9 +39,9 @@ agentpreso:
   vars:                       # Optional template variable defaults
     company: "Acme Corp"
     quarter: "Q3 2025"
-paginate: true                # Show slide numbers (Marp standard)
-header: "Acme Corp"           # Header text on every slide (Marp standard)
-footer: "Confidential"        # Footer text on every slide (Marp standard)
+paginate: true                # Show slide numbers
+header: "Acme Corp"           # Header text on every slide
+footer: "Confidential"        # Footer text on every slide
 # Per-slide overrides — see "Slide Numbers" section below
 ---
 ```
@@ -103,7 +101,7 @@ Apply a layout by adding `<!-- _class: layout-name -->` at the start of a slide:
 # Title Text
 ```
 
-The `_class` directive is a standard Marp/Marpit feature. The underscore prefix means it applies to the current slide only (not all subsequent slides).
+The `_class` directive adds a CSS class to the current slide's `<section>` element. The underscore prefix means it applies to the current slide only (not all subsequent slides).
 
 **Global directives** (without underscore) apply to all subsequent slides:
 
@@ -204,7 +202,7 @@ Upload via CLI (`agentpreso push` automatically uploads referenced assets), API 
 
 ### Background images
 
-Use Marp's `bg` keyword in the alt text:
+Use the `bg` keyword in the alt text:
 
 ```markdown
 ![bg](asset://background-image)
@@ -301,7 +299,6 @@ Enable page numbers globally in frontmatter:
 
 ```yaml
 ---
-marp: true
 paginate: true
 ---
 ```
@@ -332,7 +329,6 @@ Page number hidden on this slide
 
 ```markdown
 ---
-marp: true
 paginate: true
 ---
 
@@ -367,7 +363,7 @@ The `_paginate` directive uses the underscore prefix (like `_class`), meaning it
 
 ## Speaker notes
 
-Add speaker notes with Marp's HTML comment syntax:
+Add speaker notes with HTML comment syntax:
 
 ```markdown
 ## Slide Title
@@ -382,7 +378,7 @@ Only visible in presenter mode.
 
 ## Scoped styles
 
-Apply CSS to a single slide with Marp's `<style scoped>`:
+Apply CSS to a single slide with `<style scoped>`:
 
 ```markdown
 ## Custom Styled Slide

@@ -15,7 +15,6 @@ Clean and simple with lots of whitespace. Perfect for technical talks and develo
 
 ```markdown
 ---
-marp: true
 agentpreso:
   theme: minimal
 ---
@@ -32,7 +31,6 @@ High contrast with a dark background. Great for presentations in dimly lit rooms
 
 ```markdown
 ---
-marp: true
 agentpreso:
   theme: dark
 ---
@@ -49,7 +47,6 @@ Professional and structured. Ideal for business presentations, quarterly reviews
 
 ```markdown
 ---
-marp: true
 agentpreso:
   theme: corporate
 ---
@@ -66,7 +63,6 @@ Bold and modern. Perfect for marketing, product launches, and creative projects.
 
 ```markdown
 ---
-marp: true
 agentpreso:
   theme: creative
 ---
@@ -83,7 +79,6 @@ The official AgentPreso brand theme with navy and tangerine accents on an ivory 
 
 ```markdown
 ---
-marp: true
 agentpreso:
   theme: agentpreso
 ---
@@ -168,7 +163,6 @@ Override theme defaults with your brand colors and fonts using the `brand` objec
 
 ```markdown
 ---
-marp: true
 agentpreso:
   theme: corporate
   brand:
@@ -304,7 +298,6 @@ A starter deck that demonstrates all available layouts:
 
 ```markdown
 ---
-marp: true
 agentpreso:
   theme: my-brand
 paginate: true
@@ -392,7 +385,6 @@ Once uploaded, use your theme in any presentation:
 
 ```markdown
 ---
-marp: true
 agentpreso:
   theme: my-brand
 ---

@@ -215,7 +215,7 @@ One of `id` or `slug` must be provided.
   "id": "deck_abc123",
   "slug": "my-presentation",
   "title": "My Presentation",
-  "markdown": "---\nmarp: true\n...",
+  "markdown": "---\ntheme: minimal\n...",
   "themeId": "minimal"
 }
 ```

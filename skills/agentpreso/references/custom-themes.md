@@ -101,7 +101,7 @@ section.quote blockquote {
 }
 ```
 
-Use `!important` on `display` and `padding` properties in layout classes — this is required to override Marpit's scaffold styles.
+For layout overrides, target the appropriate `section.<layout>` class selectors in your CSS.
 
 ## 4. Write a scaffold deck (optional)
 
@@ -109,7 +109,6 @@ A `scaffold.md` gives users a starting point when they create a deck with your t
 
 ```markdown
 ---
-marp: true
 agentpreso:
   theme: my-brand
 paginate: true
@@ -193,7 +192,6 @@ Or set it in any deck's frontmatter:
 
 ```markdown
 ---
-marp: true
 agentpreso:
   theme: my-brand
 ---
