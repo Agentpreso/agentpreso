@@ -126,7 +126,7 @@ broken content in the rendered output.
 
 ## Markdown Format
 
-Standard markdown. Slides separated by `---`. Frontmatter sets theme and options:
+Standard markdown. Slides separated by `---`. Deck-level frontmatter sets theme and options. Per-slide frontmatter sets layout and directives:
 
 ```markdown
 ---
@@ -134,10 +134,10 @@ theme: corporate
 paginate: true
 ---
 
-<!-- _paginate: skip -->
-
 # Title Slide
 
+---
+layout: bullets
 ---
 
 ## Content Slide
@@ -145,13 +145,53 @@ paginate: true
 - Bullet points work naturally
 
 ---
-
-<!-- _class: quote -->
+layout: quote
+---
 
 > "Styled blockquote"
 >
 > — Attribution
 ```
+
+### Per-Slide Frontmatter
+
+Each slide can have its own YAML frontmatter block (Slidev-style). The `layout` key maps to the slide's CSS class:
+
+```markdown
+---
+layout: bullets
+---
+
+## My Bullets
+- Point A
+- Point B
+```
+
+Supported per-slide keys: `layout`, `class`, `transition`, `backgroundColor`, `backgroundImage`, `fragments`, `fragmentType`, `paginate`, `header`, `footer`, `color`, `style`.
+
+The `layout` key is the primary way to set a slide's layout. Alternative: `<!-- _class: layout-name -->` (HTML comment syntax, still supported).
+
+### Named Slots
+
+For multi-column and container layouts, use `::name::` syntax to route content into named slots:
+
+```markdown
+---
+layout: two-col
+---
+
+## Comparison
+
+::left::
+### Option A
+- First benefit
+
+::right::
+### Option B
+- Different benefit
+```
+
+Available slot names: `left`, `right`, `center`, `col`, `column`, `stat`. The `:::name ... :::` container syntax is also supported as an alternative.
 
 ### Pagination directives
 
@@ -161,9 +201,11 @@ paginate: true
 | `<!-- _paginate: skip -->` | Hide and don't count (use on title) |
 | `<!-- _paginate: hold -->` | Same number as previous slide |
 
+These can also be set via per-slide frontmatter: `paginate: false`, `paginate: skip`, `paginate: hold`.
+
 ### Slide Layouts
 
-Apply with `<!-- _class: layout-name -->`:
+Apply with per-slide frontmatter `layout: layout-name` (preferred) or `<!-- _class: layout-name -->`:
 
 **Opening & Closing**
 
@@ -221,12 +263,17 @@ Apply with `<!-- _class: layout-name -->`:
 
 ### Dark Mode Per-Slide
 
-Add `invert` class to flip any slide to dark palette. Combine with layouts:
+Add `invert` to flip any slide to dark palette. Combine with layouts:
 
 ```markdown
-<!-- _class: invert title-hero -->
+---
+layout: invert title-hero
+---
+
 # Dark Opening Slide
 ```
+
+Alternative syntax: `<!-- _class: invert title-hero -->`
 
 Charts, diagrams, and images auto-adapt to dark background.
 
