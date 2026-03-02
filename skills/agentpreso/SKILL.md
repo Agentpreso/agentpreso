@@ -229,6 +229,7 @@ Apply with per-slide frontmatter `layout: layout-name` (preferred) or `<!-- _cla
 | `definition` | Term/definition pairs |
 | `agenda` | Meeting or talk agenda |
 | `cards` | Card grid for features or concepts |
+| `custom` | Blank canvas for agent-authored HTML with component classes |
 
 **Media**
 
@@ -345,15 +346,164 @@ Or from a file: `agentpreso render deck.md --vars overrides.yaml`
 
 ## Slide Design Principles
 
-- **Every slide needs a visual** — chart, diagram, image, or graphic. No text-only slides.
-- **Vary layouts** — don't repeat the same layout consecutively. Alternate between content, data, media, and comparison layouts to keep the deck visually dynamic.
-- **One idea per slide** — split dense content across multiple slides.
+- **Every slide needs visual structure** — use layouts, bold hierarchy, tables, callouts,
+  and stats. Charts and images are powerful but not required on every slide.
+- **One topic per slide** — but density is OK. A table + callouts + stats serving one topic
+  is better than 3 sparse slides.
+- **Match density to purpose** — board decks and data analysis should be information-dense.
+  Keynotes and narratives should breathe. There's no single right density.
+- **Create visual rhythm** — vary layouts, alternate dense and simple slides, mix data
+  with narrative. Don't repeat the same layout three times in a row.
+- **Bold text is your main tool** — `**bold**` renders in heading color in bullets, tables,
+  and stats. Use it to create visual anchors that guide the eye.
 - **Preview before done** — always check with `agentpreso preview` before declaring finished.
+
+### Writing Beautiful Markdown
+
+The CSS does heavy lifting — but only if you write markdown that gives it something
+to work with. These patterns produce noticeably better slides:
+
+**Bullet lists with bold titles:**
+Lead each item with a bold phrase. The CSS renders the bold text in heading color, creating visual anchors:
+
+```markdown
+- **Revenue grew 42%** — driven by enterprise expansion and seat upgrades
+- **Net retention hit 130%** — expansion outpacing churn 6:1
+- **Gross margin at 94%** — infrastructure migration cut per-query cost 44%
+```
+
+**Nested bullets as descriptions:**
+Sub-items render smaller in secondary color — like a title + description pattern:
+
+```markdown
+- **Revenue grew 42%**
+  - Driven by enterprise expansion and seat upgrades across all segments
+- **Net retention hit 130%**
+  - Expansion outpacing churn 6:1, with enterprise NRR at 145%
+```
+
+**Tables with bold emphasis:**
+Bold cells get heading color automatically. Use bold for the numbers you want to stand out:
+
+```markdown
+| Metric     | Q3      | Q4        | Change       |
+|------------|---------|-----------|--------------|
+| ARR        | $6.8M   | **$10.2M**| **+50%**     |
+| Customers  | 380     | **528**   | **+39%**     |
+```
+
+**Blockquote callouts:**
+Use blockquotes for contextual annotations. Lead with a bold title line:
+
+```markdown
+> **Revenue on track**
+> Q4 exceeded forecast by 12%, driven by enterprise expansion.
+```
+
+**Stats with bold values:**
+In `stats-grid` and `stats-row` layouts, bold text becomes the hero number:
+
+```markdown
+Revenue
+**$10.2M**
+```
+
+### Data-Dense Slides
+
+For board decks, financial reports, and analytical presentations, single-topic slides
+with multiple components create the most professional output. Use `two-col` or
+`three-col` layouts to combine:
+
+- A **table** in one column showing the data
+- **Callouts** in the other column providing context and interpretation
+- **Stat boxes** summarizing key numbers
+
+Example structure:
+
+```markdown
+---
+layout: two-col
+---
+## Revenue by Segment
+
+::left::
+| Segment | ARR | Growth |
+|---------|-----|--------|
+| Enterprise | **$5.8M** | **+68%** |
+| Mid-Market | $2.9M | +41% |
+| SMB | $1.5M | +12% |
+
+::right::
+> **Enterprise is the growth engine**
+> Average ACV doubled from $119K to $200K.
+
+> **SMB churn needs attention**
+> 4.2% quarterly — 16% annualized.
+```
+
+This produces a slide with a clean data table on the left and interpretive
+callouts on the right — far more useful than splitting this across 3 slides.
+
+### Custom HTML Slides
+
+For layouts not covered by built-in options, use `layout: custom` with raw HTML.
+The slide inherits theme variables but imposes no structural CSS.
+
+**Prefer component classes over inline styles.** The base CSS includes pre-styled
+components that work across all themes:
+
+| Class | What it renders |
+|-------|----------------|
+| `.callout` + `.callout-success` / `-warning` / `-danger` / `-info` / `-primary` | Colored annotation box with title + body |
+| `.stat-box` + `.stat-box-success` / `-warning` / `-danger` / `-info` / `-primary` | Bordered metric box with value + label |
+| `.stat-box-value`, `.stat-box-label`, `.stat-box-detail` | Stat box inner elements |
+| `.card` + `.card-title` | Container that can wrap tables, stats, callouts |
+| `.bar-row` + `.bar-label` / `.bar-track` / `.bar-fill` / `.bar-value` | CSS-only horizontal bar chart |
+| `.bar-fill-success` / `-warning` / `-danger` / `-info` | Bar fill color variants |
+| `.summary-grid` + `.summary-item` / `.summary-total` | Row of big numbers with optional total |
+| `.summary-item-value`, `.summary-item-label` | Summary grid inner elements |
+| `.quadrant-grid` + `.quadrant` + `.quadrant-title` | 2x2 colored matrix |
+| `.quadrant-success` / `-warning` / `-danger` / `-info` | Quadrant background variants |
+| `.action-badge` + `.action-num` / `.action-text` / `.action-impact` | Numbered action items |
+
+**Authoring priority:**
+1. Standard markdown with a named layout (best — simplest, most portable)
+2. `layout: custom` with component classes (good — structured, theme-aware)
+3. `layout: custom` with inline styles and theme variables (acceptable — one-off designs)
+4. `<style>` or `<script>` blocks (forbidden — stripped at render time)
+
+**Semantic colors** available in all components and via inline styles:
+`var(--color-success)`, `var(--color-warning)`, `var(--color-danger)`, `var(--color-info)`
+— plus `-light` variants for backgrounds.
+
+Example custom slide with components:
+
+```html
+---
+layout: custom
+---
+
+<div style="display: grid; grid-template-columns: 3fr 2fr; gap: 2rem; height: 100%;">
+  <div class="card">
+    <div class="card-title">Revenue by Segment</div>
+    <!-- markdown table or HTML table here -->
+  </div>
+  <div>
+    <div class="callout callout-success">
+      <h5>Enterprise is the engine</h5>
+      <p>ACV doubled to $200K. Net retention at 145%.</p>
+    </div>
+    <div class="callout callout-warning" style="margin-top: 1rem;">
+      <h5>SMB churn rising</h5>
+      <p>4.2% quarterly churn — needs the Growth tier.</p>
+    </div>
+  </div>
+</div>
+```
 
 ### Diagrams and Charts — Layout Rules
 
-**Never combine bullet lists (>2 items) with diagrams or charts on the same slide.**
-They compete for vertical space and the diagram overflows. The renderer will reject this with a 422 error.
+**Be cautious mixing long lists with large visuals.** If a chart or diagram shares a slide with bullets, keep the list short (3-4 items max) and use `two-col` or `figure` layout to give each element room. The renderer will warn if content overflows.
 
 | Visual scenario | Layout to use | Why |
 |----------------|---------------|-----|
